@@ -21,20 +21,35 @@ export default defineEventHandler(async (event) => {
         // HTML에서 원하는 데이터 추출
         const items = []
         $('.itemList .itemWrap').each((_,el) => {
-            //items.push($(el).text())
+            const prodName = $(el).find('.itemTxtWrap > .itemtitle > p > a').text()
+            const parts = prodName.split(')'); // ')'를 기준으로 분리
+            const brand = parts[0]; // "오뚜기"
+            const name = parts.slice(1).join(')'); // "골드치킨마요덮밥(컵밥)"
 
-            items.push({
-                name:$(el).find('.itemTxtWrap > .itemtitle > p > a').text(),
-                price:$(el).find('.itemTxtWrap > span > a').text(),
-                type:$(el).find('.itemTit span:nth-child(2)').text()
-            })
+            let type = ''
+            switch($(el).find('.itemTit span:nth-child(2)').text()){
+                case '1 + 1':
+                    type = '1to1'
+                    break
+                case '2 + 1':
+                    type = '2to1'
+                    break
+            }
+
+            if(type != ''){
+                items.push({
+                    brand:brand,
+                    name:name,
+                    prodName:prodName,
+                    type:type,
+                    price:$(el).find('.itemTxtWrap > span > a').text(),
+                    image:$(el).find('.itemSpImg > img').attr('src')
+                })
+            }
+
+
 
         })
-        const title = $('title').text();
-        const headings = [];
-        $('h1, h2').each((_, el) => {
-            headings.push($(el).text());
-        });
 
         return {
             items,

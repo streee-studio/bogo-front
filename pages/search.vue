@@ -1,18 +1,23 @@
 <template>
     <div class="container py-6">
-        <div v-if="items" class="">
-            <item-list :items="items"></item-list>
-        </div>
+        <template v-if="items">
+            <template v-if="items.length > 0">
+                <item-list :items="items"></item-list>
+            </template>
+            <template v-else>
+                <div class="bg-slate-200 bg-opacity-50 flex flex-col items-center justify-center py-10 rounded-lg">
+                    <h4 class="text-lg font-thin text-slate-500">검색 결과가 없습니다</h4>
+                </div>
+            </template>
+        </template>
 
-        <div class="flex justify-center py-12" v-if="isLoading">
-            <i class="fa-solid fa-spin fa-spinner text-4xl"></i>
-        </div>
-
-        <button class="btn btn-primary" @click="getItems">load</button>
     </div>
-
 </template>
 <script setup>
+import qs from 'qs'
+
+const route = useRoute()
+const query = route.query
 
 import {onMounted, onUnmounted} from "vue";
 
@@ -23,9 +28,19 @@ const isLoading = ref(false)
 const getItems = () => {
     if(isLoading.value) return
     isLoading.value = true
-    fetch('/apis/item?page='+page.value+((randomNumber.value) ? '&randomNumber='+randomNumber.value : ''),{
-            method:'GET',
-        })
+
+    const q = {
+        page:page.value,
+        searchs:{
+            keyword:query.keyword
+        }
+    }
+
+    if(randomNumber.value) q.randomNumber = randomNumber.value
+
+    fetch('/apis/item?'+qs.stringify(q),{
+        method:'GET',
+    })
         .then(response => response.json())
         .then(data => {
             if(data.result){
