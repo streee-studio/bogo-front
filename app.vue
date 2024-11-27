@@ -4,6 +4,8 @@
     </NuxtLayout>
 </template>
 <script setup>
+const config = useRuntimeConfig()
+
 useHead({
     link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
@@ -15,6 +17,6 @@ useSeoMeta({
     ogTitle:'bogo - 편의점 행사상품 정보',
     description:'편의점 1+1, 2+1 행사상품 정보를 한눈에 확인하세요',
     ogDescription:'편의점 1+1, 2+1 행사상품 정보를 한눈에 확인하세요',
-    ogImage:'/og.jpg'
+    ogImage:config.public.siteURL + '/og.jpg'
 })
 </script>

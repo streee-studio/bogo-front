@@ -47,6 +47,11 @@ export default defineNuxtConfig({
       },
     },
   },
+  runtimeConfig: {
+    public: {
+      siteURL: process.env.SITE_URL || 'http://localhost:4014',
+    },
+  },
   nitro: {
     preset: "vercel",
   },
