@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      siteURL: process.env.SITE_URL || 'http://localhost:4014',
+      siteURL: process.env.NODE_ENV === 'development' ? 'http://localhost:4014' : 'https://buy.one-get.one',
     },
   },
   nitro: {

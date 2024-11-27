@@ -1,7 +1,7 @@
 <template>
     <div class="container py-6">
         <keep-alive>
-            <div v-if="items" class="grid grid-cols-2 gap-x-3 gap-y-3">
+            <div v-if="items" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-3">
                 <div v-for="item in items" class="bg-white rounded-lg shadow-sm" @click="$router.push('/test1')">
                     <div class="pb-card relative">
                         <div class="absolute left-0 top-0 w-full h-full p-2">
@@ -15,7 +15,7 @@
                     <div class="px-3 py-2 border-t border-slate-100">
                         <h4 class="text-sm font-semibold tracking-tight h-10 leading-5 line-clamp-2">{{ item.name }}</h4>
 
-                        <div class="grid grid-cols-2 gap-x-2 gap-y-2 mt-2">
+                        <div class="grid lg:flex grid-cols-2 gap-x-2 gap-y-2 mt-2">
                             <template v-for="(code) in ['gs25','cu','emart24','711']">
                                 <div
                                     v-if="item.event[code].type"
@@ -33,7 +33,7 @@
                                         <img src="~assets/img/cvsLogo/emart24.png" v-if="code=='emart24'">
                                     </div>
 
-                                    <span class="flex-1 flex justify-center text-tnum text-white text-md font-semibold tracking-tighter">
+                                    <span class="flex-1 flex justify-center text-tnum text-white text-md font-semibold tracking-tighter md:px-2">
                                         <template  v-if="item.event[code].type == '2to1'">2 + 1</template>
                                         <template  v-if="item.event[code].type == '1to1'">1 + 1</template>
                                     </span>
