@@ -5,8 +5,9 @@
 <!--                <div class="flex"><strong>b</strong><span>uy</span> <strong>o</strong><span>ne</span></div>-->
 <!--                <div class="flex"><strong>g</strong><span>et</span> <strong>o</strong><span>ne</span></div>-->
 <!--            </h1>-->
-            <h1 class="text-4xl font-thin text-primary">
-                bogo
+            <h1 class="flex items-center" @click="$router.push('/')">
+                <div class="w-20 h-14 bg-contain bg-center bg-no-repeat" :style="{'background-image':'url('+headerLogo+')'}"></div>
+                <span class="!hidden">bogo</span>
             </h1>
             <div class="flex items-center">
                 <button><i class="fa-light fa-search text-xl"></i></button>
@@ -32,3 +33,6 @@ header{
     }
 }
 </style>
+<script setup>
+import headerLogo from '~/assets/img/logo-header.png'
+</script>

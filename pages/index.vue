@@ -2,7 +2,7 @@
     <div class="container py-6">
         <keep-alive>
             <div v-if="items" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-3">
-                <div v-for="item in items" class="bg-white rounded-lg shadow-sm" @click="$router.push('/test1')">
+                <div v-for="item in items" class="bg-white rounded-lg shadow-sm">
                     <div class="pb-card relative">
                         <div class="absolute left-0 top-0 w-full h-full p-2">
                             <div
@@ -24,11 +24,11 @@
                                 >
                                     <div
 
+                                        :class="{'p-0':code=='cu'}"
                                         class="w-4 h-4 p-1 rounded-full bg-white flex items-center justify-center"
-                                        :style="{'padding:1px':code=='cu'}"
                                     >
                                         <img src="~assets/img/cvsLogo/gs25.png" v-if="code=='gs25'">
-                                        <img src="https://static.wikia.nocookie.net/logopedia/images/5/59/CU_logo_2017.svg" v-if="code=='cu'">
+                                        <img src="https://static.wikia.nocookie.net/logopedia/images/5/59/CU_logo_2017.svg" v-if="code=='cu'" class="scale-75">
                                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtfl5V_ub1C5ss7m8NyKVyJN4ei9UCcSVXxA&s" v-if="code=='711'">
                                         <img src="~assets/img/cvsLogo/emart24.png" v-if="code=='emart24'">
                                     </div>
@@ -88,7 +88,7 @@ const handleScroll = () => {
     const documentHeight = document.documentElement.scrollHeight; // 전체 문서 높이
 
     // 스크롤이 아래에서 200px 이내로 도달하면 실행
-    if (!isLoading.value && scrollTop + windowHeight >= documentHeight - 200) {
+    if (!isLoading.value && scrollTop + windowHeight >= documentHeight - 700) {
         getItems();
     }
 };
