@@ -11,6 +11,8 @@
             </template>
         </template>
 
+        <button @click="tsp(true)">open</button>
+        <button @click="tsp(false)">close</button>
     </div>
 </template>
 <script setup>
@@ -19,12 +21,14 @@ import qs from 'qs'
 const route = useRoute()
 const query = route.query
 
-import {onMounted, onUnmounted} from "vue";
+import {onMounted, onUnmounted, inject, provide} from "vue";
 
 const items = ref([])
 const page = ref(1)
 const randomNumber = ref(null)
 const isLoading = ref(false)
+const tsp = inject('toggleSearchPop')
+
 const getItems = () => {
     if(isLoading.value) return
     isLoading.value = true
@@ -54,6 +58,7 @@ const getItems = () => {
             isLoading.value = false
         })
 }
+provide('searchGetItems',getItems)
 
 const handleScroll = () => {
     const scrollTop = window.scrollY; // 현재 스크롤 위치
