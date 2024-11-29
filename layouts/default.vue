@@ -158,6 +158,7 @@ const openSearchPop = () => {
     toggleSearchPop(true)
     setTimeout(() => {
         searchPopInputKeyword.value.focus()
+        searchPopInputKeyword.value.click()
     },10)
 }
 
@@ -173,12 +174,12 @@ const doSearch = () => {
         return
     }
 
+    openSearch.value = false
     if(window.location.pathname == '/search'){
         location.href='/search?' + qs.stringify(searchs)
     }else{
         router.push('/search?' + qs.stringify(searchs))
     }
-    openSearch.value = false
 }
 
 const handleScroll = () => {
