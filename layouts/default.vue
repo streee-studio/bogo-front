@@ -88,8 +88,8 @@
         </div>
     </div>
 
-    <div class="fixed left-0 bottom-0 w-full h-14 z-[35]">
-        <div class="container bg-white h-full flex items-center justify-center border-t border-slate-200 shadow-lg pb-safe-bottom">
+    <div class="fixed left-0 bottom-0 w-full pb-safe-bottom z-[35] bg-white ">
+        <div class="container  h-14 flex items-center justify-center border-t border-slate-200 ">
             <button class="h-full w-24 flex flex-col justify-center items-center" @click="$router.push('/')">
                 <i class="fa-light fa-home text-md mb-1"></i>
                 <span class="text-xs text-slate-500">HOME</span>
