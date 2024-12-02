@@ -62,9 +62,17 @@
             <div class="flex justify-center">
                 <button class="btn btn-primary" @click="saveEvent">저장</button>
             </div>
+
         </div>
     </div>
 
+
+    <div v-if="saves.pending" class="fixed left-0 top-0 w-full h-full bg-black bg-opacity-70 flex items-center justify-center z-30">
+        <div class="text-white text-xl font-bold">
+            {{ saves.page }} / {{ saves.totalPages }}
+
+        </div>
+    </div>
 </template>
 <script setup>
 const dataset = reactive({
@@ -82,6 +90,7 @@ const startScrap = () => {
 
 const scrapEvents = () => {
     const url = ref(null)
+    saves.page = null
     switch(dataset.cvs){
         case 'cu': url.value = '/api/scrap/cu'; break;
         case '711': url.value = '/api/scrap/seveneleven'; break;
@@ -111,14 +120,47 @@ const scrapEvents = () => {
         })
 }
 
+const saves = reactive({
+    page:null,
+    perPage:50,
+    totalPages:0,
+    dataset:[],
+    pending:false,
+
+})
 const saveEvent = () => {
+    if(!saves.page){
+        saves.page = 1
+        saves.totalPages = Math.ceil(dataset.items.length / saves.perPage)
+        saves.pending = true
+    }
+
+    const items = dataset.items.slice((saves.page - 1)*saves.perPage,(saves.page - 1)*saves.perPage + saves.perPage)
+
     fetch('/apis/admin/event',{
             method:'POST',
-            body:JSON.stringify(dataset)
+            body:JSON.stringify({
+                cvs:dataset.cvs,
+                items:items,
+                init:(saves.page == 1) ? true : false
+            })
         })
         .then(response => response.json())
         .then(data => {
+            if(data.result){
+                saves.page++
 
+                if(saves.page <= saves.totalPages){
+                    saveEvent()
+                }else{
+                    alert('완료')
+                    saves.pending = false
+                }
+            }else{
+                alert(data.message)
+            }
         })
 }
+
+
 </script>

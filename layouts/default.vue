@@ -56,14 +56,14 @@
             <button class="flex items-center justify-center w-10 h-10 rounded-full bg-white absolute left-1/2 -translate-x-1/2 -top-14" @click="searchPop=false">
                 <i class="fa-light fa-times text-xl text-slate-500"></i>
             </button>
-            <div class="flex flex-col h-full">
+            <div class="flex flex-col h-full pt-6">
                 <div class="flex-1">
-                    <div class="input full mb-14">
+                    <div class="input full mb-6">
                         <div class="title">검색어</div>
                         <input type="text" v-model="searchs.keyword" @keyup.enter="doSearch" ref="searchPopInputKeyword">
                     </div>
 
-                    <div class="input full mb-14">
+                    <div class="input full mb-6">
                         <div class="title">편의점</div>
                         <div>
                             <label class="rachel sq">
@@ -81,8 +81,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <button class="btn btn-primary btn-submit btn-block" @click="doSearch">검색</button>
+                <div class="">
+                    <button class="btn btn-primary btn-submit btn-block" @click="doSearch"><i class="fa-light fa-search mr-4"></i> 검색</button>
                 </div>
             </div>
         </div>
@@ -90,30 +90,34 @@
 
     <div class="fixed left-0 bottom-0 w-full pb-safe-bottom z-[35] bg-white ">
         <div class="container  h-14 flex items-center justify-center border-t border-slate-200 ">
-            <button class="h-full w-24 flex flex-col justify-center items-center" @click="$router.push('/')">
-                <i class="fa-light fa-home text-md mb-1"></i>
+            <button class="h-full flex-1 flex flex-col justify-center items-center" @click="$router.push('/')">
+                <i class="h-5 fa-light fa-home text-md mb-1"></i>
                 <span class="text-xs text-slate-500">HOME</span>
             </button>
-            <button class="h-full w-24 flex flex-col justify-center items-center" @click="openSearchPop">
-                <i class="fa-light fa-search text-md mb-1"></i>
+            <button class="h-full flex-1 flex flex-col justify-center items-center" @click="openSearchPop">
+                <i class="h-5 fa-light fa-search text-md mb-1"></i>
                 <span class="text-xs text-slate-500">검색</span>
             </button>
-            <button class="h-full w-24 flex flex-col justify-center items-center">
-                <i class="fa-light fa-heart text-md mb-1"></i>
+            <button class="h-full flex-1 flex flex-col justify-center items-center">
+                <i class="h-5 fa-light fa-map-marker-alt text-md mb-1"></i>
+                <span class="text-xs text-slate-500">편의점</span>
+            </button>
+            <button class="h-full flex-1 flex flex-col justify-center items-center" @click="signin.modal=true">
+                <i class="h-5 fa-light fa-heart text-md mb-1"></i>
                 <span class="text-xs text-slate-500">관심 상품</span>
             </button>
-            <button class="h-full w-24 flex flex-col justify-center items-center" @click="$router.push('/mypage')">
-                <i class="fa-light fa-user text-md mb-1"></i>
+            <button class="h-full flex-1 flex flex-col justify-center items-center" @click="$router.push('/mypage')">
+                <i class="h-5 fa-light fa-user text-md mb-1"></i>
                 <span class="text-xs text-slate-500">마이페이지</span>
             </button>
         </div>
     </div>
 
-    <div class="fixed left-0 top-0 w-full h-full bg-black bg-opacity-70 z-40 flex items-center justify-center p-6" v-if="false">
+    <div class="fixed left-0 top-0 w-full h-full bg-black bg-opacity-70 z-40 flex items-center justify-center p-6" v-if="signin.modal">
         <div class="bg-white rounded-lg w-full px-6 py-12">
             <h3 class="text-2xl font-bold">로그인</h3>
 
-            <button class="flex items-center justify-center h-12 bg-amber-500">카카오로 로그인</button>
+            <button class="flex items-center justify-center h-12 bg-amber-500" @click="doSignin('kakao')">카카오로 로그인</button>
         </div>
     </div>
 </template>
@@ -136,7 +140,7 @@ import headerLogo from '~/assets/img/logo-header.png'
 import qs from 'qs'
 import {onMounted, onUnmounted, watch, provide, inject} from "vue";
 
-
+const config = useRuntimeConfig()
 const router = useRouter()
 const route = useRoute()
 const openSearch = ref(false)
@@ -146,6 +150,9 @@ const fixedHeader = ref(false)
 const searchPop = ref(false)
 const searchPopInputKeyword = ref(null)
 
+const signin = reactive({
+    modal:false
+})
 
 
 const toggleSearchPop = (open) => {
@@ -174,7 +181,7 @@ const doSearch = () => {
         return
     }
 
-    openSearch.value = false
+    searchPop.value = false
     if(window.location.pathname == '/search'){
         location.href='/search?' + qs.stringify(searchs)
     }else{
@@ -189,6 +196,16 @@ const handleScroll = () => {
 
     headerTransition.value = (scrollTop > 0)
 };
+
+const doSignin = (mode) => {
+    switch(mode){
+        case 'kakao':
+            Kakao.Auth.authorize({
+                redirectUri: config.public.siteURL + '/apis/account/kakao-callback',
+            });
+            break
+    }
+}
 
 watch(
     () => route.fullPath, // fullPath를 감시
@@ -225,5 +242,10 @@ if (process.client) {
         }
     };
     document.head.appendChild(script);
+
+    // console.log('hey')
+    if(!Kakao.isInitialized()){
+        Kakao.init('6fe4655aee68d1d699960e5afd4a7add');
+    }
 }
 </script>

@@ -17,7 +17,8 @@ useHead({
             src: "//wcs.naver.net/wcslog.js",
             type: "text/javascript",
             async: true,
-        }
+        },
+        {type: 'text/javascript', src: "https://developers.kakao.com/sdk/js/kakao.js"},
     ],
     meta: [
         {

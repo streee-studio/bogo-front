@@ -3,3 +3,4 @@ Allow: /
 Disallow: /api/
 Disallow: /apis/
 Disallow: /admin/
+Disallow: /mypage/
